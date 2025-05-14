@@ -1,0 +1,16 @@
+[{
+  "_id": {
+    "$oid": "682480d49a98328c3e079466"
+  },
+  "Nama": "NIM",
+  "Jeprianto": ":"
+},
+{
+  "_id": {
+    "$oid": "682480d49a98328c3e079467"
+  },
+  "Nama": "Kelas:",
+  ":": "Manajemen",
+  "Jeprianto": "Basis",
+  "": "E2022"
+}]
