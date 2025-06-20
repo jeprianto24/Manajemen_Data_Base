@@ -1,0 +1,235 @@
+1. database :
+   use schoolDB
+
+   collection:
+
+  db.students.insertOne({
+    "name": "Anto",
+    "age": 16,
+    "score": 85,
+    "gender": "male"
+  })
+
+
+2. Create document
+db.students.insertMany([
+  {
+    _id: ObjectId("685497461f989440a29c4f63"),
+    name: "Andi",
+    age: 20,
+    score: 90,
+    gender: "male"
+  },
+  {
+    _id: ObjectId("685497461f989440a29c4f65"),
+    name: "Citra",
+    age: 19,
+    score: 91,
+    gender: "female"
+  },
+  {
+    _id: ObjectId("685497a11f989440a29c4f68"),
+    name: "Bongga",
+    age: 17,
+    score: 72,
+    gender: "male"
+  },
+  {
+    _id: ObjectId("685497a11f989440a29c4f69"),
+    name: "Andri",
+    age: 19,
+    score: 91,
+    gender: "female"
+  },
+  {
+    _id: ObjectId("685498421f989440a29c4f6b"),
+    name: "Dewi",
+    age: 23,
+    score: 88,
+    gender: "female"
+  }
+])
+
+
+
+3. Read document
+db.students.find()
+
+4. Update document
+db.students.updateOne(
+  { name: "Anto" },         // filter dokumen
+  { $set: { score: 95 } }   // perubahan yang dilakukan
+)
+
+
+5. Delete document
+db.students.deleteOne({ name: "Anto" })
+
+6. Comparision query
+
+	// 1. Sama dengan ($eq): 
+	db.students.find({ score: { $eq: 90 } })
+
+	// 2. Tidak sama dengan ($ne): 
+	db.students.find({ score: { $ne: 90 } })
+
+	// 3. Lebih besar dari ($gt): 
+	db.students.find({ score: { $gt: 85 } })
+
+	// 4. Lebih besar atau sama dengan ($gte): 
+	db.students.find({ score: { $gte: 85 } })
+
+	// 5. Kurang dari ($lt): 
+	db.students.find({ score: { $lt: 80 } })
+
+	// 6. Kurang dari atau sama dengan ($lte): 
+	db.students.find({ score: { $lte: 80 } })
+
+	// 7. Termasuk dalam list ($in): 	db.students.find({ score: { $in: [85, 88, 91] } })
+
+	// 8. Tidak termasuk dalam list ($nin): ]
+	db.students.find({ score: { $nin: [85, 88, 91] } })
+
+	// 9. Kombinasi: 
+	db.students.find({	age: { $gte: 17, $lte: 20 }})
+
+7. Logical query
+// Gunakan database
+use sekolah
+
+// 1. $and: Cari students dengan gender "female" DAN score > 85
+db.students.find({
+  $and: [
+    { gender: "female" },
+    { score: { $gt: 85 } }
+  ]
+})
+
+// 2. $or: Cari students dengan score > 90 ATAU age < 18
+db.students.find({
+  $or: [
+    { score: { $gt: 90 } },
+    { age: { $lt: 18 } }
+  ]
+})
+
+// 3. $nor: Cari students yang BUKAN female DAN score BUKAN > 90
+db.students.find({
+  $nor: [
+    { gender: "female" },
+    { score: { $gt: 90 } }
+  ]
+})
+
+// 4. $not: Cari students dengan score TIDAK lebih besar dari 85
+db.students.find({
+  score: { $not: { $gt: 85 } }
+})
+
+// 5. Kombinasi $and + $in: Cari students female dengan skor 85 ATAU 91
+db.students.find({
+  $and: [
+    { gender: "female" },
+    { score: { $in: [85, 91] } }
+  ]
+})
+
+
+
+8. Bulk write
+db.students.bulkWrite([
+  // 1. Insert dokumen baru
+  {
+    insertOne: {
+      document: {
+        name: "Lia",
+        age: 18,
+        score: 92,
+        gender: "female"
+      }
+    }
+  },
+
+  // 2. Update dokumen (misal update skor sisudnts bernama "Andi")
+  {
+    updateOne: {
+      filter: { name: "Andi" },
+      update: { $set: { score: 95 } }
+    }
+  },
+
+  // 3. Delete dokumen (hapus students bernama "Bongga")
+  {
+    deleteOne: {
+      filter: { name: "Bongga" }
+    }
+  },
+
+  // 4. Replace dokumen (ganti total data students bernama "Anto")
+  {
+    replaceOne: {
+      filter: { name: "Anto" },
+      replacement: {
+        name: "Antonius",
+        age: 17,
+        score: 89,
+        gender: "male"
+      }
+    }
+  }
+])
+
+
+9.Aggregation
+db.students.aggregate([
+  {
+    $match: { score: { $gte: 85 } }  // Filter: hanya score >= 85
+  },
+  {
+    $group: {
+      _id: "$gender",      // Kelompokkan berdasarkan gender
+      rataRataScore: { $avg: "$score" },
+      totalScore: { $sum: "$score" },
+      jumlahSiswa: { $sum: 1 }
+    }
+  },
+  {
+    $sort: { rataRataScore: -1 } // Urutkan dari skor rata-rata tertinggi
+  }
+])
+
+
+10. Schema validation
+
+db.createCollection("siswa", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["name", "age", "score", "gender"],
+      properties: {
+        name: {
+          bsonType: "string",
+          description: "harus berupa string dan wajib diisi"
+        },
+        age: {
+          bsonType: "int",
+          minimum: 15,
+          maximum: 25,
+          description: "harus berupa integer antara 15 dan 25"
+        },
+        score: {
+          bsonType: "int",
+          minimum: 0,
+          maximum: 100,
+          description: "harus berupa integer antara 0 dan 100"
+        },
+        gender: {
+          enum: ["male", "female"],
+          description: "harus salah satu dari: male atau female"
+        }
+      }
+    }
+  },
+  validationLevel: "strict",  
+  validationAction: "error" 
+})

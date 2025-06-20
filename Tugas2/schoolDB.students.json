@@ -1,0 +1,54 @@
+[{
+  "_id": {
+    "$oid": "685497461f989440a29c4f63"
+  },
+  "name": "Andi",
+  "age": 20,
+  "score": 90,
+  "gender": "male"
+},
+{
+  "_id": {
+    "$oid": "685497461f989440a29c4f65"
+  },
+  "name": "Citra",
+  "age": 19,
+  "score": 91,
+  "gender": "female"
+},
+{
+  "_id": {
+    "$oid": "685497a11f989440a29c4f67"
+  },
+  "name": "Anto",
+  "age": 16,
+  "score": 85,
+  "gender": "male"
+},
+{
+  "_id": {
+    "$oid": "685497a11f989440a29c4f68"
+  },
+  "name": "Bongga",
+  "age": 17,
+  "score": 72,
+  "gender": "male"
+},
+{
+  "_id": {
+    "$oid": "685497a11f989440a29c4f69"
+  },
+  "name": "Andri",
+  "age": 19,
+  "score": 91,
+  "gender": "female"
+},
+{
+  "_id": {
+    "$oid": "685498421f989440a29c4f6b"
+  },
+  "name": "Dewi",
+  "age": 23,
+  "score": 88,
+  "gender": "female"
+}]
